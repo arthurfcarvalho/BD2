@@ -1,0 +1,113 @@
+create database revisao_prova;
+
+use revisao_prova;
+
+CREATE TABLE editora(
+
+	id_editora int primary key, -- NÃO ESTÁ AUTO INCREMENT PRA REALIZAR O TESTE DO NUMERO 4
+    nome varchar(45) not null,
+    endereco varchar(45) not null
+);
+
+-- exercicio 1
+CREATE TABLE livro(
+
+	id_livro int auto_increment primary key,
+    isbn varchar(45) not null,
+    titulo varchar(45) not null,
+    edicao int not null,
+    preco float not null,
+    id_editora int not null,
+    FOREIGN KEY (id_editora) references editora(id_editora)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+
+);
+
+CREATE TABLE autor(
+
+	id_autor int auto_increment primary key,
+    nome varchar(150) not null,
+    data_nascimento date not null,
+    genero varchar(45) not null
+);
+
+CREATE TABLE publicacao(
+
+	id_livro int,
+    id_autor int,
+    
+    FOREIGN KEY(id_livro) references livro(id_livro),
+    FOREIGN KEY(id_autor) references autor(id_autor)
+
+);
+
+
+use revisao_prova;
+
+-- exercicio 3
+
+INSERT INTO editora values(1, "Editora Nova", "Rua A, 100");
+
+-- resto
+
+INSERT INTO editora values(50, "Editora ABC", "Rua B, 50");
+INSERT into editora values(2, "Editora IF", "Rua C, 20");
+
+INSERT into livro values(NULL, "12345678", "Teste", 2, 15.00, 1); 
+
+INSERT into autor values(NULL, "Arthur", str_to_date("29/01/2003", "%d/%m/%Y"), "Biografia");
+
+INSERT into livro values(NULL, "1212", "Shrek 2", 15, 20.00, 2);
+
+INSERT into autor values(NULL, "Sommerville", str_to_date("26/05/1990", "%d/%m/%Y"), "Cientifico");
+INSERT into livro values(NULL, "12312311", "ESW 1", 69, 155.00, 1);
+
+INSERT into publicacao values(8, 2);
+INSERT into publicacao values(1, 2);
+
+
+
+
+use revisao_prova;
+
+-- exercicio 2
+
+DELETE from livro where isbn = "12345678";
+SELECT * from livro;
+
+-- exercicio 4
+
+UPDATE editora
+SET endereco = "Rua IF, 10"
+WHERE id_editora = 50;
+
+-- exercicio 5
+
+SELECT nome
+from autor
+where genero = "Biografia";
+
+-- exercicio 6
+
+SELECT * from livro
+join editora on livro.id_editora = editora.id_editora
+where editora.nome = "Editora IF";
+
+-- exercicio 7
+
+-- exercicio 8
+
+select livro.titulo, livro.isbn from livro
+join publicacao on livro.id_livro = publicacao.id_livro
+join autor on publicacao.id_autor = autor.id_autor
+where autor.nome="Sommerville" and livro.preco > 100.00;
+
+-- exercicio 9
+
+-- exercicio 10
+
+-- exercicio 11
+
+DROP TABLE editora;
+
